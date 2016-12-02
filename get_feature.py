@@ -13,7 +13,7 @@ deployPrototxt =  'models/weather/deploy.prototxt'
 # 相应载入的modelfile
 modelFile = 'caffemodel/_iter_79000.caffemodel'
 # meanfile 也可以用自己生成的
-meanFile = '/home/han/workspace/caffe/python/caffe/imagenet/ilsvrc_2012_mean.npy'
+meanFile = 'python/caffe/imagenet/ilsvrc_2012_mean.npy'
 # 需要提取的图像列表
 imageListFile = 'snow.txt'
 imageBasePath = '/home/han/weather_database/'
@@ -25,8 +25,8 @@ def initilize():
     print 'initilize ... '
 
     sys.path.insert(0, caffe_root + 'python')
+    caffe.set_device(0)
     caffe.set_mode_gpu()
-    caffe.set_device(gpuID)
     net = caffe.Net(deployPrototxt, modelFile,caffe.TEST)
     return net  
 # 提取特征并保存为相应地文件
