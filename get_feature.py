@@ -15,7 +15,7 @@ modelFile = 'caffemodel/_iter_79000.caffemodel'
 # meanfile 也可以用自己生成的
 meanFile = 'python/caffe/imagenet/ilsvrc_2012_mean.npy'
 # 需要提取的图像列表
-imageListFile = 'snow.txt'
+imageListFile = 'weather.txt'
 imageBasePath = '/home/han/weather_database/'
 
 # 初始化函数的相关操作
@@ -29,7 +29,6 @@ def initilize():
     return net  
 # 提取特征并保存为相应地文件
 def extractFeature(imageList, net):
-    ac = [0, 0, 0]
     # 对输入数据做相应地调整如通道、尺寸等等
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
     transformer.set_transpose('data', (2,0,1))
@@ -47,10 +46,11 @@ def extractFeature(imageList, net):
         fea_file = 'feature.txt' 
         num +=1
         print 'Num ',num,' extract feature ',fea_file
-        with  open(fea_file, 'ab') as f:
+        with  open(fea_file, 'a') as f:
+            f.write(imagefile_abs + ' ')
             for x in xrange(0, net.blobs['fc8_weather'].data.shape[0]):
                 for y in xrange(0, net.blobs['fc8_weather'].data.shape[1]):
-                    f.write(struct.pack('f', net.blobs['fc8_weather'].data[x,y]))
+                    f.write(str(net.blobs['fc8_weather'].data[x,y]) + ' ')
             f.write('\n')
 
 # 读取文件列表
