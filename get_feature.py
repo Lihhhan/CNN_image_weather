@@ -17,8 +17,6 @@ meanFile = 'python/caffe/imagenet/ilsvrc_2012_mean.npy'
 # 需要提取的图像列表
 imageListFile = 'snow.txt'
 imageBasePath = '/home/han/weather_database/'
-gpuID = 4
-postfix = '.classify_weather_fc8weather'
 
 # 初始化函数的相关操作
 def initilize():
@@ -45,10 +43,10 @@ def extractFeature(imageList, net):
         print imagefile_abs
         net.blobs['data'].data[...] = transformer.preprocess('data', caffe.io.load_image(imagefile_abs))
         out = net.forward()
-        fea_file = imagefile_abs.replace('.jpg',postfix)
+        fea_file = 'feature.txt' 
         num +=1
         print 'Num ',num,' extract feature ',fea_file
-        with  open(fea_file,'wb') as f:
+        with  open(fea_file,'w') as f:
             for x in xrange(0, net.blobs['fc8_weather'].data.shape[0]):
                 for y in xrange(0, net.blobs['fc8_weather'].data.shape[1]):
                     f.write(struct.pack('f', net.blobs['fc8_weather'].data[x,y]))
