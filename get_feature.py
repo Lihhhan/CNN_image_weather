@@ -15,7 +15,8 @@ modelFile = 'caffemodel/_iter_79000.caffemodel'
 # meanfile 也可以用自己生成的
 meanFile = 'python/caffe/imagenet/ilsvrc_2012_mean.npy'
 # 需要提取的图像列表
-imageListFile = 'weather.txt'
+#imageListFile = 'weather.txt'
+imageListFile = sys.argv[1]
 imageBasePath = '/home/han/weather_database/'
 
 # 初始化函数的相关操作

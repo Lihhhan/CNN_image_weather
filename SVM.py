@@ -13,32 +13,40 @@ clf.fit(X, y)
 print clf.predict([[2., 2.]])
 '''
 
+print "usage: python SVM.py trainfile testfile "
+
+
+def readfile(fname):
+    weathers = ['snow', 'cloudy', 'sunny']
+    feature = []
+    label = []
+
+    f = open(fname)
+    while 1:
+        line = f.readline()
+        if not line:
+            break
+        value = line.strip().split(' ')
+        for i in xrange(len(weathers)):
+            if value[0].find(weathers[i]) > -1:          
+                label.append(i)
+                value.pop(0)
+                feature.append(map(float, value))
+                break
+    return (feature, label)
+
+
+
+trainfile = sys.argv[1]
+testfile = sys.argv[2]
 
 #data prepare
-weathers = ['snow', 'cloudy', 'sunny']
 features = [[],[]]
 labels = [[],[]]
 
-f = open(sys.argv[1])
+features[0], labels[0] = readfile(trainfile)
+features[1], labels[1] = readfile(testfile)
 
-while 1:
-    line = f.readline()
-    if not line:
-        break
-    value = line.strip().split(' ')
-    for i in xrange(len(weathers)):
-        if value[0].find(weathers[i]) > -1: 
-            #train set and test set 
-            r = randint(0, 3)
-            if r == 0:
-                labels[1].append(i) 
-                value.pop(0)
-                features[1].append(map(float, value))
-            else:
-                labels[0].append(i)
-                value.pop(0)
-                features[0].append(map(float, value))
-            break
 #svm init    
 clf = svm.SVC()
 clf.fit(features[0], labels[0])
