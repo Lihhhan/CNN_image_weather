@@ -29,7 +29,7 @@ def initilize():
     net = caffe.Net(deployPrototxt, modelFile,caffe.TEST)
     return net  
 # 提取特征并保存为相应地文件
-def extractFeature(imageList, net, layer='fc7'):
+def extractFeature(imageList, net, layer='fc7', fea_file='train'):
     # 对输入数据做相应地调整如通道、尺寸等等
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
     transformer.set_transpose('data', (2,0,1))
@@ -44,7 +44,7 @@ def extractFeature(imageList, net, layer='fc7'):
         print imagefile_abs
         net.blobs['data'].data[...] = transformer.preprocess('data', caffe.io.load_image(imagefile_abs))
         out = net.forward()
-        fea_file = 'feature.txt' 
+        fea_file = './feature/' + fea_file + '_' + layer + '.txt' 
         num +=1
         print 'Num ',num,' extract feature ',fea_file
         with  open(fea_file, 'a') as f:
@@ -69,5 +69,5 @@ def readImageList(imageListFile):
 if __name__ == "__main__":
     net = initilize()
     imageList = readImageList(imageListFile) 
-    extractFeature(imageList, net, sys.argv[2])
+    extractFeature(imageList, net, sys.argv[2], sys.argv[3])
 
