@@ -51,7 +51,9 @@ def extractFeature(imageList, net, layer='fc7', pre='train'):
             f.write(imagefile_abs + ' ')
             for x in xrange(0, net.blobs[layer].data.shape[0]):
                 for y in xrange(0, net.blobs[layer].data.shape[1]):
-                    f.write(str(net.blobs[layer].data[x,y]) + ' ')
+                    #conv 和 pool 层的特征是数组形式，要转为float数
+                    f.write(" ".join(map(str, list(net.blobs[layer].data[x,y].reshape(-1,)))) + ' ')
+                    #f.write(str(net.blobs[layer].data[x,y]) + ' ')
             f.write('\n')
 
 # 读取文件列表
